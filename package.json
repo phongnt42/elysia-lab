@@ -3,7 +3,9 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --watch src/app.ts & bun run --watch src/render.ts",
+    "start:app": "bun run --watch src/app.ts",
+    "start:render": "bun run --watch src/render.ts"
   },
   "dependencies": {
     "elysia": "latest"

@@ -11,5 +11,11 @@ To start the development server run:
 ```bash
 bun run dev
 ```
+```bash
+bun start:app
+```
+```bash
+bun start:render
+```
 
 Open http://localhost:3000/ with your browser to see the result.
