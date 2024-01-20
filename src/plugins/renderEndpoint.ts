@@ -10,6 +10,7 @@ export const renderEndpoint = new Elysia({
   name: 'render-endpoint',
 })
   .onTransform(({ request: req }) => {
+    console.log('[DEBUG PHONG] request', req.exceptBootstrap, req.url);
     req.renderEndpoint = process.env.RENDER_ENDPOINT || 'http://localhost:3333';
     if (
       req.ssrContext?.bootstrap?.theme.customized &&

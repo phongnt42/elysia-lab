@@ -1,11 +1,34 @@
-import { Context } from 'elysia';
 import { Logger } from '@bogeychan/elysia-logger/src/types';
+import fs from 'fs';
 export type UseCallbacks<T> = {
   add(handler: T): void;
   reset(): void;
   list(): T[];
 };
-
+export async function readFile(path: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    fs.readFile(
+      path,
+      {
+        encoding: 'utf8',
+        flag: 'r',
+      },
+      (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      }
+    );
+  });
+}
+export enum CacheKeys {
+  Bootstrap = 'bootstrap',
+  FeatureSwitch = 'feature_switch',
+  ThirdPartyAppsVersion = 'third_party_apps_version',
+  PaymentComponentVersion = 'payment_component_version',
+}
 export function useCallbacks<T>(): UseCallbacks<T> {
   let handlers: T[] = [];
 
@@ -88,6 +111,7 @@ export interface SSRBootstrap {
   secure: SecureState;
   shop: Shop;
   cdn: Cdn;
+  navigation: Navigation;
 }
 
 export type SSRContext = {

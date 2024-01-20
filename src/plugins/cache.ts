@@ -26,4 +26,4 @@ export const cache = new Elysia({ name: 'cache' })
       cache = new Debug(log);
     }
     return { cache };
-  });
+  })
