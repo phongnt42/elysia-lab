@@ -1,22 +1,25 @@
 import Elysia from 'elysia';
-import { CustomContext } from '../types/app';
 import rootPath from 'app-root-path';
 import { createRequire } from 'module';
+import { logger } from '@bogeychan/elysia-logger';
 
 const isProd = process.env.NODE_ENV === 'production';
 const require = createRequire(import.meta.url);
 
 const addHook = () => {
-  const theme = new Elysia({ name: 'theme' });
+  const theme = new Elysia({ name: 'theme' }).use(
+    logger({
+      level: 'error',
+    })
+  );
+
   if (isProd) {
-    theme.onBeforeHandle(async ({ request: req, log }: CustomContext) => {
-      if (!req.ssrContext.state?.theme) {
+    theme.onBeforeHandle(async ({ request: req, log }) => {
+      if (!req?.ssrContext.state?.theme) {
         return;
       }
 
-      const {
-        version_id: versionId,
-      } = req.ssrContext.state.theme;
+      const { version_id: versionId } = req.ssrContext.state.theme;
 
       try {
         const pkgPath = `@themes/theme-${versionId}`;
@@ -27,13 +30,13 @@ const addHook = () => {
         req.ssrContext.state.theme.cdn.checkout_style = '';
         return;
       } catch (err) {
-        log?.error(err, 'Theme not exists');
+        log.error(err, 'Theme not exists');
         return;
       }
     });
   } else {
-    theme.onBeforeHandle(({ request: req, log }: CustomContext) => {
-      if (!req.ssrContext.state?.theme) {
+    theme.onBeforeHandle(({ request: req, log }) => {
+      if (!req?.ssrContext?.state?.theme) {
         return;
       }
 
@@ -45,7 +48,7 @@ const addHook = () => {
         req.ssrContext.theme = require(`${pkgPath}/server.js`).default.plugin;
         req.ssrContext.state.theme.cdn.javascript = manifest.javascript;
       } catch (err) {
-        log?.error(err, 'Theme not exists');
+        log.error(err, 'Theme not exists');
         return;
       }
 
@@ -55,7 +58,7 @@ const addHook = () => {
         }
       } catch (err) {
         req.ssrContext.state.shop.locale.content = {};
-        log?.debug(err, 'Theme locale not exist');
+        log.debug(err, 'Theme locale not exist');
       }
     });
   }

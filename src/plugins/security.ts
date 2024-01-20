@@ -1,4 +1,4 @@
-import Elysia, { Context } from 'elysia';
+import Elysia from 'elysia';
 import { SSRBootstrap } from '../types/app';
 
 declare global {
@@ -9,7 +9,7 @@ declare global {
 
 export const security = new Elysia({
   name: 'security',
-}).onBeforeHandle(({ request: req, set }: Context) => {
+}).onBeforeHandle(({ request: req, set }) => {
   if (!req?.ssrContext?.bootstrap || !req?.ssrContext?.isCheckout) {
     return;
   }

@@ -21,3 +21,11 @@ export enum StoreClass {
   Default = 'default',
   Clone = 'clone',
 }
+
+export enum LogLevels {
+  none = 'none',
+  error = 'error',
+  warn = 'warn',
+  info = 'info',
+  debug = 'debug',
+}

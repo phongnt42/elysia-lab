@@ -1,11 +1,12 @@
-import Elysia, { Context } from "elysia";
-import { renderEndpoint } from "./plugins/renderEndpoint";
-import { security } from "./plugins/security";
-import { storeClass } from "./plugins/storeClass";
-import { thirdPartyApp } from "./plugins/thirdPartyApp";
-import { theme } from "./plugins/theme";
-import { logger } from "@bogeychan/elysia-logger";
-import { SSRContext } from "./types/app";
+import Elysia, { Context } from 'elysia';
+import { renderEndpoint } from './plugins/renderEndpoint';
+import { security } from './plugins/security';
+import { storeClass } from './plugins/storeClass';
+import { thirdPartyApp } from './plugins/thirdPartyApp';
+import { theme } from './plugins/theme';
+import { logger } from '@bogeychan/elysia-logger';
+import { SSRContext } from './types/app';
+import { http } from './plugins/http';
 
 const port = Number(process.env.PORT) || 3000;
 declare global {
@@ -14,6 +15,7 @@ declare global {
     http: any;
   }
 }
+
 
 const requestOptions = {
   method: 'POST',
@@ -24,14 +26,11 @@ const handleRenderEndpoint = ({ request }: Context) => {
   return `Bel2lo: ${request.renderEndpoint}`;
 };
 
-const app = new Elysia().use(
-  logger({
-    level: 'error',
-  })
-);
+const app = new Elysia();
 
 // plugins
 app.use(renderEndpoint);
+app.use(http);
 app.use(security);
 app.use(storeClass);
 app.use(thirdPartyApp);

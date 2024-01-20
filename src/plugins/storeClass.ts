@@ -1,4 +1,4 @@
-import Elysia, { Context } from 'elysia';
+import Elysia from 'elysia';
 import { StoreClass as StoreClassType } from '../types/app';
 import { StoreClass } from '../constants';
 
@@ -11,11 +11,11 @@ declare global {
 export const storeClass = new Elysia({
   name: 'storeClass',
 })
-  .derive(({ request: req }: Context) => {
+  .derive(({ request: req }) => {
     req.storeClass = StoreClass.Default;
     return {};
   })
-  .onTransform(({ request: req }: Context) => {
+  .onTransform(({ request: req }) => {
     if (req.ssrContext?.bootstrap?.shop.platform.suspended) {
       req.storeClass = StoreClass.Clone;
     }
