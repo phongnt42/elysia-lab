@@ -1,14 +1,13 @@
-import type { RedisClient, ClientOpts } from 'redis';
-import { Cache, SetCacheOptions } from '../types';
-import { useCallbacks, UseCallbacks } from '@shopbase/shared';
+import { Cache, SetCacheOptions } from '../types/app';
+import { useCallbacks, UseCallbacks } from '../types/app';
 
 export class Redis implements Cache {
-  private client: RedisClient;
+  private client: any;
   private connected = false;
   private readyHandlers: UseCallbacks<any>;
   private ready = false;
 
-  constructor(options: ClientOpts = {}) {
+  constructor(options: any = {}) {
     this.client = require('redis').createClient(options);
     this.readyHandlers = <any>useCallbacks();
     this.listen();

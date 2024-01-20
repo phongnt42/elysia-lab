@@ -6,6 +6,30 @@ export type UseCallbacks<T> = {
   list(): T[];
 };
 
+export function useCallbacks<T>(): UseCallbacks<T> {
+  let handlers: T[] = [];
+
+  function add(handler: T): () => void {
+    handlers.push(handler);
+    return () => {
+      const i = handlers.indexOf(handler);
+      if (i !== -1) {
+        handlers.splice(i, 1);
+      }
+    };
+  }
+
+  function reset() {
+    handlers = [];
+  }
+
+  return {
+    add,
+    list: () => handlers,
+    reset,
+  };
+}
+
 export type Shop = {
   id: number;
   name: string;
